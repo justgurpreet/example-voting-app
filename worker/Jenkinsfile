@@ -8,7 +8,10 @@ agent{
            image 'maven:3.6.1-jdk-8-slim'
            args '-v m2cache:/root/.m2'
         }
-    }          
+    }
+            when{
+             changeset "**/worker/**"
+          }
 steps{
               echo "Building worker app ..."
               dir("worker"){
@@ -23,6 +26,9 @@ steps{
            args '-v m2cache:/root/.m2'
         }
     }
+            when{
+             changeset "**/worker/**"
+          }
           steps{
               echo "Testing worker app ..."
               dir("worker"){
@@ -37,6 +43,9 @@ steps{
            args '-v m2cache:/root/.m2'
         }
     } 
+            when{
+             changeset "**/worker/**"
+          }
          steps{
               echo "Packaging worker app ..."
               dir("worker"){
@@ -47,6 +56,9 @@ steps{
 
        stage('docker-package'){
          agent any
+           when{
+             changeset "**/worker/**"
+          }
          steps{
            echo 'Packaging worker app with docker'
            script{
